@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img src="../assets/R-removebg-preview.png" alt="Logo de YouTube">
+    </div>
+    <h2>Videos de YouTube</h2>
+    <div *ngIf="isLoggedIn">
+      <p>Bienvenido, {{ username }}!</p>
+    </div>
+    <ul class="navbar-links">
+      <li><a href="#">Inicio</a></li>
+      <li *ngIf="!isLoggedIn"><a href="#" (click)="showLogin()">Iniciar sesión</a></li>
+      <li *ngIf="!isLoggedIn"><a href="#" (click)="showRegister()">Registrarse</a></li>
+      <li *ngIf="isLoggedIn"><a href="#" (click)="logout()">Cerrar sesión</a></li>
+    </ul>
+  </nav>
+  
+
+
+
+  <!-- Buscador -->
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="searchVideos()" placeholder="Buscar videos...">
+    <button (click)="searchVideos()">Buscar</button>
+  </div>
+       <!-- Formulario de inicio de sesión -->
+       <div *ngIf="showLoginForm" class="login-form">
+        <h3>Iniciar sesión</h3>
+          <input type="text" [(ngModel)]="username" placeholder="Usuario">
+          <input type="password" [(ngModel)]="password" placeholder="Contraseña">
+       <button (click)="login(username, newPassword)">Iniciar sesión</button>
+       </div> 
+       <br>
+       <!-- Formulario de registro -->
+       <div *ngIf="showRegisterForm" class="register-form">
+       <h3>Registrarse</h3>
+         <input type="text" [(ngModel)]="newUsername" placeholder="Usuario">
+         <input type="password" [(ngModel)]="newPassword" placeholder="Contraseña">
+        <button (click)="register(newUsername, newPassword)">Registrarse</button>
+       </div>
+
+  <!-- Lista de videos -->
+  <div *ngFor="let video of videos" class="video-container">
+    <h3>{{ video.snippet.title }}</h3>
+    <iframe [src]="getVideoEmbedUrl(video.id.videoId)" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+    <p>{{ video.snippet.description }}</p>
+    <p>Canal: {{ video.snippet.channelTitle }}</p>
+    <hr>
+  </div>
+
+</body>
+</html>
